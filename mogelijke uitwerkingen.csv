@@ -1,0 +1,28 @@
+elke cel beval een 4-bit getal met aanduiding of er een muur staat of niet (boven,rechts, onder, links)
+ 1 | 1 | 1
+1 0|0 0|0 1
+ 0 | 1 | 0
+-----------
+ 0 | 1 | 0
+1 1|1 1|1 1
+ 0 | 1 | 0
+-----------
+ 0 | 1 | 0
+1 0|0 0|0 1
+ 1 | 1 | 1
+
+1001,1010,1100
+0101,1111,0101
+0011,1010,0110
+
+9,10,12
+5,15,5
+3,10,6
+
+elke cel is leeg(pad) of een muur
+
+1,1,1,1,1
+1,0,0,0,1
+1,0,1,0,1
+1,0,0,0,1
+1,1,1,1,1
