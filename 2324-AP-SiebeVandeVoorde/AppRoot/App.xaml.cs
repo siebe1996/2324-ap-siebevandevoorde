@@ -14,8 +14,8 @@ namespace AppRoot
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            IData data = new Data();
-            ILogic logic = new Logic(data);
+            IMazeDataAccess data = MazeDataAccessFactory.CreateMazeDataAccess();
+            IMazeGenerator logic = MazeGeneratorFactory.CreateMazeGenerator(data);
             new MainWindow(logic).Show();
         }
     }
