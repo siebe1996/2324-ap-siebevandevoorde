@@ -10,7 +10,7 @@ namespace Globals.Entities
     {
         public int Row { get; }
         public int Column { get; }
-        public char Value { get; }
+        public char Value { get; set; }
 
         public MazeNode(int row, int column, char value)
         {
