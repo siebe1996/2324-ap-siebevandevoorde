@@ -17,7 +17,8 @@ namespace AppRoot
             IMazeDataAccess data = MazeDataAccessFactory.CreateMazeDataAccess();
             IBasicMazeGenerator basicMazeGenerator = BasicMazeGeneratorFactory.CreateBasicMazeGenerator(data);
             IAddWallMazeGenerator addWallMazeGenerator = AddWallMazeGeneratorFactory.CreateAddWallMazeGenerator();
-            new MainWindow(basicMazeGenerator, addWallMazeGenerator).Show();
+            IRemoveWallMazeGenerator removeWallMazeGenerator = RemoveWallMazeGeneratorFactory.CreateRemoveWallMazeGenerator();
+            new MainWindow(basicMazeGenerator, addWallMazeGenerator, removeWallMazeGenerator).Show();
         }
     }
 }

@@ -15,12 +15,14 @@ namespace PresentationLayer
     {
         private readonly IBasicMazeGenerator basicMazeGenerator;
         private readonly IAddWallMazeGenerator addWallMazeGenerator;
+        private readonly IRemoveWallMazeGenerator removeWallMazeGenerator;
 
-        public MainWindow(IBasicMazeGenerator basicMazeGenerator, IAddWallMazeGenerator addWallMazeGenerator)
+        public MainWindow(IBasicMazeGenerator basicMazeGenerator, IAddWallMazeGenerator addWallMazeGenerator, IRemoveWallMazeGenerator removeWallMazeGenerator)
         {
             InitializeComponent();
             this.basicMazeGenerator = basicMazeGenerator;
             this.addWallMazeGenerator = addWallMazeGenerator;
+            this.removeWallMazeGenerator = removeWallMazeGenerator;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -45,7 +47,6 @@ namespace PresentationLayer
             if (maze != null)
             {
                 // Display the maze on the canvas
-                // You can implement a method to draw the maze grid here
                 DrawMaze(maze);
             }
             else
@@ -65,7 +66,6 @@ namespace PresentationLayer
             if (maze != null)
             {
                 // Display the maze on the canvas
-                // You can implement a method to draw the maze grid here
                 DrawGraphMaze(maze);
             }
             else
@@ -84,12 +84,29 @@ namespace PresentationLayer
             if (maze != null)
             {
                 // Display the maze on the canvas
-                // You can implement a method to draw the maze grid here
                 DrawGraphMaze(maze);
             }
             else
             {
-                MessageBox.Show("Invalid CSV file or other error occurred.");
+                MessageBox.Show("Something went wrong");
+            }
+        }
+
+        private void GenerateRemoveWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Maze maze = removeWallMazeGenerator.GenerateMaze(7, 7, 6);
+
+            // Clear previous maze (if any)
+            MazeCanvas.Children.Clear();
+
+            if (maze != null)
+            {
+                // Display the maze on the canvas
+                DrawGraphMaze(maze);
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong");
             }
         }
 

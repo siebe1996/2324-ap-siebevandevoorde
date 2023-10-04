@@ -136,54 +136,6 @@ namespace LogicLayer
             }
         }
 
-        private int CalculateNumWallsToAdd(int width, int height, int wallThickness)
-        {
-            // Calculate the total number of cells and the percentage of walls based on wall thickness
-            int totalCells = width * height;
-            double wallPercentage = wallThickness / 100.0;
-
-            // Calculate the number of walls to add as a percentage of total cells
-            int numWallsToAdd = (int)(totalCells * wallPercentage);
-
-            // Ensure numWallsToAdd is within a reasonable range
-            numWallsToAdd = Math.Min(Math.Max(numWallsToAdd, 0), totalCells - 1);
-
-            return numWallsToAdd;
-        }
-    
-
-
-
-
-
-
-
-        private List<MazeNode> GetAdjacentNodes(Maze maze, MazeNode node)
-        {
-            int row = node.Row;
-            int col = node.Column;
-            List<MazeNode> adjacentNodes = new List<MazeNode>();
-
-            if (row > 0)
-            {
-                adjacentNodes.Add(maze.MazeGraph.Vertices.First(n => n.Row == row - 1 && n.Column == col));
-            }
-            if (row < maze.Height - 1)
-            {
-                adjacentNodes.Add(maze.MazeGraph.Vertices.First(n => n.Row == row + 1 && n.Column == col));
-            }
-            if (col > 0)
-            {
-                adjacentNodes.Add(maze.MazeGraph.Vertices.First(n => n.Row == row && n.Column == col - 1));
-            }
-            if (col < maze.Width - 1)
-            {
-                adjacentNodes.Add(maze.MazeGraph.Vertices.First(n => n.Row == row && n.Column == col + 1));
-            }
-
-            return adjacentNodes;
-        }
-
 
     }
 }
