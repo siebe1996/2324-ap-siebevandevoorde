@@ -55,7 +55,7 @@ namespace PresentationLayer
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
-            UndirectedGraph<MazeNode, Edge<MazeNode>> maze = mazeGenerator.GenerateGraphMaze(filePath);
+            Maze maze = mazeGenerator.GenerateGraphMaze(filePath);
 
             // Clear previous maze (if any)
             MazeCanvas.Children.Clear();
@@ -131,22 +131,20 @@ namespace PresentationLayer
         }
 
 
-        public void DrawGraphMaze(UndirectedGraph<MazeNode, Edge<MazeNode>> mazeGraph)
+        public void DrawGraphMaze(Maze maze)
         {
-            if (mazeGraph == null)
-                throw new ArgumentNullException(nameof(mazeGraph));
+            if (maze == null)
+                throw new ArgumentNullException(nameof(maze));
 
             // Clear the canvas before drawing the maze
             MazeCanvas.Children.Clear();
 
-            // Makes the cells bigger when lower
-            double cellSizeMultiplier = 0.25;
 
             // Determine the cell size based on the smaller dimension to ensure it fits entirely
-            double cellSize = Math.Min(MazeCanvas.ActualWidth / (mazeGraph.VertexCount * cellSizeMultiplier), MazeCanvas.ActualHeight / (mazeGraph.VertexCount * cellSizeMultiplier));
+            double cellSize = Math.Min((MazeCanvas.ActualWidth * maze.WallThickness) / maze.MazeGraph.VertexCount, (MazeCanvas.ActualHeight * maze.WallThickness) / maze.MazeGraph.VertexCount);
 
 
-            foreach (var vertex in mazeGraph.Vertices)
+            foreach (var vertex in maze.MazeGraph.Vertices)
             {
                 // Create a rectangle to represent the maze node
                 var nodeRectangle = new Rectangle
@@ -166,7 +164,7 @@ namespace PresentationLayer
                 MazeCanvas.Children.Add(nodeRectangle);
             }
 
-            foreach (var edge in mazeGraph.Edges)
+            foreach (var edge in maze.MazeGraph.Edges)
             {
                 // Calculate the coordinates of the edge's start and end points
                 double startX = edge.Source.Column * cellSize + cellSize / 2;

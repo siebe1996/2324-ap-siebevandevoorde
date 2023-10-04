@@ -20,7 +20,7 @@ namespace LogicLayer
 
         public char[,] GenerateMaze(string filePath)
         {
-            string[] lines = dataAccess.ReadCSV(filePath);
+            string[] lines = dataAccess.ReadCSV(filePath); 
 
             if (lines == null || lines.Length == 0)
             {
@@ -33,7 +33,7 @@ namespace LogicLayer
             return maze;
         }
 
-        public UndirectedGraph<MazeNode, Edge<MazeNode>> GenerateGraphMaze(string filePath)
+        public Maze GenerateGraphMaze(string filePath)
         {
             string[] lines = dataAccess.ReadCSV(filePath);
 
@@ -43,9 +43,9 @@ namespace LogicLayer
             }
 
             // Convert CSV data to a maze represented as an undirected graph
-            UndirectedGraph<MazeNode, Edge<MazeNode>> mazeGraph = ConvertToGraphMaze(lines);
+            Maze maze = ConvertToGraphMaze(lines);
 
-            return mazeGraph;
+            return maze;
         }
 
         private char[,] ConvertToMaze(string[] lines)
@@ -80,16 +80,19 @@ namespace LogicLayer
             return maze;
         }
 
-        private UndirectedGraph<MazeNode, Edge<MazeNode>> ConvertToGraphMaze(string[] lines)
+        private Maze ConvertToGraphMaze(string[] lines)
         {
-            var mazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
+            //var mazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
 
             int rows = lines.Length;
             int cols = lines[0].Split(',').Length; // Split the first line using commas to get the number of columns
 
+            Maze maze = new Maze(cols, rows, 4); // Create a new Maze object with the specified dimensions and wall thickness
+
+
             // Create nodes for each cell in the maze
             MazeNode[,] nodes = new MazeNode[rows, cols];
-
+            
             for (int i = 0; i < rows; i++)
             {
                 string[] values = lines[i].Split(',');
@@ -103,7 +106,7 @@ namespace LogicLayer
                     nodes[i, j] = node;
 
                     // Add the node to the graph
-                    mazeGraph.AddVertex(node);
+                    maze.MazeGraph.AddVertex(node);
 
                 }
             }
@@ -121,31 +124,31 @@ namespace LogicLayer
                         // Check and connect to the left
                         if (j > 0 && nodes[i, j - 1].Value == '0')
                         {
-                            mazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j - 1]));
+                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j - 1]));
                         }
 
                         // Check and connect upward
                         if (i > 0 && nodes[i - 1, j].Value == '0')
                         {
-                            mazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i - 1, j]));
+                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i - 1, j]));
                         }
 
                         // Check and connect to right
-                        if (j > 0 && nodes[i, j + 1].Value == '0')
+                        if (j < cols - 1 && nodes[i, j + 1].Value == '0')
                         {
-                            mazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j + 1]));
+                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j + 1]));
                         }
 
                         // Check and connect downward
-                        if (i > 0 && nodes[i + 1, j].Value == '0')
+                        if (i < rows -1 && nodes[i + 1, j].Value == '0')
                         {
-                            mazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i + 1, j]));
+                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i + 1, j]));
                         }
                     }
                 }
             }
 
-            return mazeGraph;
+            return maze;
         }
 
 

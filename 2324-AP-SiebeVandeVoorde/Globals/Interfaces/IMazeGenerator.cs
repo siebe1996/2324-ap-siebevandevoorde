@@ -11,7 +11,7 @@ namespace Globals.Interfaces
     public interface IMazeGenerator
     {
         char[,] GenerateMaze(string filePath);
-        UndirectedGraph<MazeNode, Edge<MazeNode>> GenerateGraphMaze(string filePath);
+        Maze GenerateGraphMaze(string filePath);
     }
 }
 
