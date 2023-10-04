@@ -25,6 +25,7 @@ namespace LogicLayer
             // Generate the maze using recursive backtracking
             GenerateMazeRecursive(maze, 1, 1);
 
+            // Connect all adjacent cells (nodes) in the maze
             maze.ConnectAllNodes();
 
             return maze;
