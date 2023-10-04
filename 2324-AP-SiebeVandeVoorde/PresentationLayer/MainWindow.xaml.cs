@@ -14,10 +14,10 @@ namespace PresentationLayer
     public partial class MainWindow : Window
     {
         private readonly IBasicMazeGenerator basicMazeGenerator;
-        private readonly IAddWallMazeGenerator addWallMazeGenerator;
-        private readonly IRemoveWallMazeGenerator removeWallMazeGenerator;
+        private readonly IMazeGenerator addWallMazeGenerator;
+        private readonly IMazeGenerator removeWallMazeGenerator;
 
-        public MainWindow(IBasicMazeGenerator basicMazeGenerator, IAddWallMazeGenerator addWallMazeGenerator, IRemoveWallMazeGenerator removeWallMazeGenerator)
+        public MainWindow(IBasicMazeGenerator basicMazeGenerator, IMazeGenerator addWallMazeGenerator, IMazeGenerator removeWallMazeGenerator)
         {
             InitializeComponent();
             this.basicMazeGenerator = basicMazeGenerator;

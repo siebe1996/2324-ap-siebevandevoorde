@@ -10,7 +10,7 @@ using QuickGraph;
 
 namespace LogicLayer
 {
-    public class RemoveWallMazeGenerator : IRemoveWallMazeGenerator
+    public class RemoveWallMazeGenerator : IMazeGenerator
     {
         private readonly Random random = new Random();
 

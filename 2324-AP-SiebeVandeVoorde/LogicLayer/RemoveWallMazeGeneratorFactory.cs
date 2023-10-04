@@ -9,7 +9,7 @@ namespace LogicLayer
 {
     public class RemoveWallMazeGeneratorFactory
     {
-        public static IRemoveWallMazeGenerator CreateRemoveWallMazeGenerator()
+        public static IMazeGenerator CreateRemoveWallMazeGenerator()
         {
             return new RemoveWallMazeGenerator();
         }

@@ -10,7 +10,7 @@ using System.Windows.Media.Media3D;
 
 namespace LogicLayer
 {
-    public class AddWallMazeGenerator : IAddWallMazeGenerator
+    public class AddWallMazeGenerator : IMazeGenerator
     {
         private readonly Random random = new Random();
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Globals.Interfaces
 {
-    public interface IRemoveWallMazeGenerator
+    public interface IMazeGenerator
     {
         Maze GenerateMaze(int width, int height, int wallThickness);
     }
