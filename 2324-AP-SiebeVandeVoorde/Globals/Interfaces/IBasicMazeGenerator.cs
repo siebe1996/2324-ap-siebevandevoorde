@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Globals.Interfaces
 {
-    public interface IMazeGenerator
+    public interface IBasicMazeGenerator
     {
         char[,] GenerateMaze(string filePath);
         Maze GenerateGraphMaze(string filePath);

@@ -7,9 +7,9 @@ using Globals.Interfaces;
 
 namespace LogicLayer
 {
-    public class MazeGeneratorFactory
+    public class BasicMazeGeneratorFactory
     {
-        public static IMazeGenerator CreateMazeGenerator(IMazeDataAccess dataAccess)
+        public static IBasicMazeGenerator CreateBasicMazeGenerator(IMazeDataAccess dataAccess)
         {
             // Pass the dataAccess dependency when creating BasicMazeGenerator
             return new BasicMazeGenerator(dataAccess);

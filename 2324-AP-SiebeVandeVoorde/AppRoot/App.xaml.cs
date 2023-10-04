@@ -15,8 +15,9 @@ namespace AppRoot
         protected override void OnStartup(StartupEventArgs e)
         {
             IMazeDataAccess data = MazeDataAccessFactory.CreateMazeDataAccess();
-            IMazeGenerator logic = MazeGeneratorFactory.CreateMazeGenerator(data);
-            new MainWindow(logic).Show();
+            IBasicMazeGenerator basicMazeGenerator = BasicMazeGeneratorFactory.CreateBasicMazeGenerator(data);
+            IAddWallMazeGenerator addWallMazeGenerator = AddWallMazeGeneratorFactory.CreateAddWallMazeGenerator();
+            new MainWindow(basicMazeGenerator, addWallMazeGenerator).Show();
         }
     }
 }

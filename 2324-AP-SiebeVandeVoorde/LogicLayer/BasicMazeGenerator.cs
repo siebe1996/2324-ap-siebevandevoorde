@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    public class BasicMazeGenerator : IMazeGenerator
+    public class BasicMazeGenerator : IBasicMazeGenerator
     {
         private readonly IMazeDataAccess dataAccess;
 

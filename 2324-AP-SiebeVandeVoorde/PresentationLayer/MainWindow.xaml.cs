@@ -13,12 +13,14 @@ namespace PresentationLayer
 {
     public partial class MainWindow : Window
     {
-        private readonly IMazeGenerator mazeGenerator;
+        private readonly IBasicMazeGenerator basicMazeGenerator;
+        private readonly IAddWallMazeGenerator addWallMazeGenerator;
 
-        public MainWindow(IMazeGenerator mazeGenerator)
+        public MainWindow(IBasicMazeGenerator basicMazeGenerator, IAddWallMazeGenerator addWallMazeGenerator)
         {
             InitializeComponent();
-            this.mazeGenerator = mazeGenerator;
+            this.basicMazeGenerator = basicMazeGenerator;
+            this.addWallMazeGenerator = addWallMazeGenerator;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -32,10 +34,10 @@ namespace PresentationLayer
             }
         }
 
-        private void GenerateMazeButton_Click(object sender, RoutedEventArgs e)
+        private void GenerateCharMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
-            char[,] maze = mazeGenerator.GenerateMaze(filePath);
+            char[,] maze = basicMazeGenerator.GenerateMaze(filePath);
 
             // Clear previous maze (if any)
             MazeCanvas.Children.Clear();
@@ -55,7 +57,26 @@ namespace PresentationLayer
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
-            Maze maze = mazeGenerator.GenerateGraphMaze(filePath);
+            Maze maze = basicMazeGenerator.GenerateGraphMaze(filePath);
+
+            // Clear previous maze (if any)
+            MazeCanvas.Children.Clear();
+
+            if (maze != null)
+            {
+                // Display the maze on the canvas
+                // You can implement a method to draw the maze grid here
+                DrawGraphMaze(maze);
+            }
+            else
+            {
+                MessageBox.Show("Invalid CSV file or other error occurred.");
+            }
+        }
+
+        private void GenerateAddWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Maze maze = addWallMazeGenerator.GenerateMaze(5,5,4);
 
             // Clear previous maze (if any)
             MazeCanvas.Children.Clear();
