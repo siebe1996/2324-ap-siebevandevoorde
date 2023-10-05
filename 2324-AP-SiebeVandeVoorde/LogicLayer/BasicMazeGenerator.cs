@@ -111,42 +111,7 @@ namespace LogicLayer
                 }
             }
 
-            for (int i = 0; i < rows; i++)
-            {
-
-                for (int j = 0; j < cols; j++)
-                {
-                    char currentChar = nodes[i,j].Value;
-
-                    // Connect nodes to adjacent open cells (no walls)
-                    if (currentChar == '0')
-                    {
-                        // Check and connect to the left
-                        if (j > 0 && nodes[i, j - 1].Value == '0')
-                        {
-                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j - 1]));
-                        }
-
-                        // Check and connect upward
-                        if (i > 0 && nodes[i - 1, j].Value == '0')
-                        {
-                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i - 1, j]));
-                        }
-
-                        // Check and connect to right
-                        if (j < cols - 1 && nodes[i, j + 1].Value == '0')
-                        {
-                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i, j + 1]));
-                        }
-
-                        // Check and connect downward
-                        if (i < rows -1 && nodes[i + 1, j].Value == '0')
-                        {
-                            maze.MazeGraph.AddEdge(new Edge<MazeNode>(nodes[i, j], nodes[i + 1, j]));
-                        }
-                    }
-                }
-            }
+            maze.ConnectAllNodes();
 
             return maze;
         }

@@ -94,7 +94,7 @@ namespace PresentationLayer
 
         private void GenerateRemoveWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            Maze maze = removeWallMazeGenerator.GenerateMaze(7, 7, 6);
+            Maze maze = removeWallMazeGenerator.GenerateMaze(15, 15, 8);
 
             // Clear previous maze (if any)
             MazeCanvas.Children.Clear();

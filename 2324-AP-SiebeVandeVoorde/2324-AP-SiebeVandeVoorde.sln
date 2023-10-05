@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRoot", "AppRoot\AppRoot.csproj", "{FAD9AAEB-6B54-449F-85CE-EEB5CDE8C1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppRoot", "AppRoot\AppRoot.csproj", "{FAD9AAEB-6B54-449F-85CE-EEB5CDE8C1E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globals", "Globals\Globals.csproj", "{4189A89D-82E6-45AE-A9F8-E0CCC1F3A60C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globals", "Globals\Globals.csproj", "{4189A89D-82E6-45AE-A9F8-E0CCC1F3A60C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{CB93DC7B-EB88-4E3B-A063-B937C0F131C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{CB93DC7B-EB88-4E3B-A063-B937C0F131C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{B902161B-BBA7-4291-8198-8042E002DA38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{B902161B-BBA7-4291-8198-8042E002DA38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{89C372FC-7FEA-4B2B-9CA5-6571272E3346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{89C372FC-7FEA-4B2B-9CA5-6571272E3346}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{548FA8AD-2410-46E9-98D3-41E80394D9CC}"
 	ProjectSection(SolutionItems) = preProject
 		..\OPVOLGING.md = ..\OPVOLGING.md
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readmeImages", "readmeImages", "{82B07B9D-A207-4185-978E-7C2D0270AB0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82B07B9D-A207-4185-978E-7C2D0270AB0F} = {548FA8AD-2410-46E9-98D3-41E80394D9CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3055A682-20E8-4A6A-B2D0-C654836D33F1}
