@@ -4,6 +4,7 @@ using LogicLayer;
 using Microsoft.Win32;
 using QuickGraph;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,38 +40,51 @@ namespace PresentationLayer
         private void GenerateCharMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
-            char[,] maze = basicMazeGenerator.GenerateMaze(filePath);
-
-            // Clear previous maze (if any)
-            MazeCanvas.Children.Clear();
-
-            if (maze != null)
+            try
             {
-                // Display the maze on the canvas
-                DrawMaze(maze);
+                char[,] maze = basicMazeGenerator.GenerateMaze(filePath);
+
+                // Clear previous maze (if any)
+                MazeCanvas.Children.Clear();
+
+                if (maze != null)
+                {
+                    DrawMaze(maze);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid CSV file or other error occurred.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Invalid CSV file or other error occurred.");
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
-            Maze maze = basicMazeGenerator.GenerateGraphMaze(filePath);
-
-            // Clear previous maze (if any)
-            MazeCanvas.Children.Clear();
-
-            if (maze != null)
+            try
             {
-                // Display the maze on the canvas
-                DrawGraphMaze(maze);
+                Maze maze = basicMazeGenerator.GenerateGraphMaze(filePath);
+
+                // Clear previous maze (if any)
+                MazeCanvas.Children.Clear();
+
+                if (maze != null)
+                {
+                    // Display the maze on the canvas
+                    DrawGraphMaze(maze);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid CSV file or other error occurred.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Invalid CSV file or other error occurred.");
+                MessageBox.Show(ex.Message);
             }
         }
 

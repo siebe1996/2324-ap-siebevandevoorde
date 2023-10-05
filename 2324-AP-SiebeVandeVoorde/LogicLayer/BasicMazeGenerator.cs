@@ -54,66 +54,81 @@ namespace LogicLayer
             int cols = lines[0].Split(',').Length; // Split the first line using commas to get the number of columns
             char[,] maze = new char[rows, cols];
 
-            for (int i = 0; i < rows; i++)
+            if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
             {
-                // Split the line into individual values using commas as delimiters
-                string[] values = lines[i].Split(',');
-
-                for (int j = 0; j < cols; j++)
+                throw new InvalidOperationException("Position (1, 1) is not '0'");
+            }
+            else
+            {
+                for (int i = 0; i < rows; i++)
                 {
-                    // Convert the value to a character and handle invalid values
-                    if (values.Length <= j || !char.TryParse(values[j], out char currentChar))
+                    // Split the line into individual values using commas as delimiters
+                    string[] values = lines[i].Split(',');
+
+                    for (int j = 0; j < cols; j++)
                     {
-                        maze[i, j] = ' '; // Treat as an empty space for invalid or missing values
-                    }
-                    else if (currentChar == '1')
-                    {
-                        maze[i, j] = '#'; // '1' represents a wall
-                    }
-                    else
-                    {
-                        maze[i, j] = ' '; // Any other character represents an empty space
+                        // Convert the value to a character and handle invalid values
+                        if (values.Length <= j || !char.TryParse(values[j], out char currentChar))
+                        {
+                            maze[i, j] = ' '; // Treat as an empty space for invalid or missing values
+                        }
+                        else if (currentChar == '1')
+                        {
+                            maze[i, j] = '#'; // '1' represents a wall
+                        }
+                        else
+                        {
+                            maze[i, j] = ' '; // Any other character represents an empty space
+                        }
                     }
                 }
+
+                return maze;
+            }
             }
 
-            return maze;
-        }
-
-        private Maze ConvertToGraphMaze(string[] lines)
+            private Maze ConvertToGraphMaze(string[] lines)
         {
             //var mazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
 
             int rows = lines.Length;
             int cols = lines[0].Split(',').Length; // Split the first line using commas to get the number of columns
 
-            Maze maze = new Maze(cols, rows, 4); // Create a new Maze object with the specified dimensions and wall thickness
-
-
-            // Create nodes for each cell in the maze
-            MazeNode[,] nodes = new MazeNode[rows, cols];
-            
-            for (int i = 0; i < rows; i++)
+            if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
             {
-                string[] values = lines[i].Split(',');
-
-                for (int j = 0; j < cols; j++)
-                {
-                    char currentChar = values[j][0];
-
-                    // Create a node for each cell
-                    MazeNode node = new MazeNode(i, j, currentChar);
-                    nodes[i, j] = node;
-
-                    // Add the node to the graph
-                    maze.MazeGraph.AddVertex(node);
-
-                }
+                throw new InvalidOperationException("Position (1, 1) is not '0'");
             }
+            else
+            {
 
-            maze.ConnectAllNodes();
+                Maze maze = new Maze(cols, rows, 4); // Create a new Maze object with the specified dimensions and wall thickness
 
-            return maze;
+
+                // Create nodes for each cell in the maze
+                MazeNode[,] nodes = new MazeNode[rows, cols];
+
+                for (int i = 0; i < rows; i++)
+                {
+                    string[] values = lines[i].Split(',');
+
+                    for (int j = 0; j < cols; j++)
+                    {
+                        char currentChar = values[j][0];
+
+                        // Create a node for each cell
+                        MazeNode node = new MazeNode(i, j, currentChar);
+                        nodes[i, j] = node;
+
+                        // Add the node to the graph
+                        maze.MazeGraph.AddVertex(node);
+
+                    }
+                }
+
+                maze.ConnectAllNodes();
+
+                return maze;
+            }
         }
 
 

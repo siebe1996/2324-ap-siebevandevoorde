@@ -25,7 +25,7 @@ namespace Globals.Entities
             Width = width;
             Height = height;
             WallThickness = wallThickness;
-            BallPosition = new Coordinate(0, 0); // Initialize ball position to (0, 0)
+            BallPosition = new Coordinate(1, 1); // Initialize ball position to (1, 1)
             MazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
         }
 
