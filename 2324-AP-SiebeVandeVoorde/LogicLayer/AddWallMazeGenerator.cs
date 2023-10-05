@@ -67,6 +67,12 @@ namespace LogicLayer
                 int randomRow = random.Next(1, height - 1);
                 int randomCol = random.Next(1, width - 1);
 
+                // Skip position (1, 1)
+                if (randomRow == 1 && randomCol == 1)
+                {
+                    continue;
+                }
+
                 // Find the MazeNode at the random position and set its value to '1' to represent a wall
                 MazeNode randomNode = maze.MazeGraph.Vertices.First(node => node.Row == randomRow && node.Column == randomCol);
                 randomNode.Value = '1';

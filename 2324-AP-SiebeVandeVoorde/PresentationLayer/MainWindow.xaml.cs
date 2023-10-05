@@ -191,10 +191,8 @@ namespace PresentationLayer
             // Clear the canvas before drawing the maze
             MazeCanvas.Children.Clear();
 
-
             // Determine the cell size based on the smaller dimension to ensure it fits entirely
             double cellSize = Math.Min((MazeCanvas.ActualWidth * maze.WallThickness) / maze.MazeGraph.VertexCount, (MazeCanvas.ActualHeight * maze.WallThickness) / maze.MazeGraph.VertexCount);
-
 
             foreach (var vertex in maze.MazeGraph.Vertices)
             {
@@ -216,29 +214,24 @@ namespace PresentationLayer
                 MazeCanvas.Children.Add(nodeRectangle);
             }
 
-            foreach (var edge in maze.MazeGraph.Edges)
+            // Draw the ball
+            var ballEllipse = new Ellipse
             {
-                // Calculate the coordinates of the edge's start and end points
-                double startX = edge.Source.Column * cellSize + cellSize / 2;
-                double startY = edge.Source.Row * cellSize + cellSize / 2;
-                double endX = edge.Target.Column * cellSize + cellSize / 2;
-                double endY = edge.Target.Row * cellSize + cellSize / 2;
+                Width = cellSize / 2, // Adjust the size as needed
+                Height = cellSize / 2,
+                Fill = Brushes.Green, // Choose a color for the ball
+            };
 
-                // Create a line to represent the edge
-                var edgeLine = new Line
-                {
-                    X1 = startX,
-                    Y1 = startY,
-                    X2 = endX,
-                    Y2 = endY,
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2
-                };
+            // Set the position of the ball on the canvas based on its maze coordinates
+            double ballX = maze.BallPosition.X * cellSize + cellSize / 4; // Adjust the position for centering
+            double ballY = maze.BallPosition.Y * cellSize + cellSize / 4; // Adjust the position for centering
+            Canvas.SetLeft(ballEllipse, ballX);
+            Canvas.SetTop(ballEllipse, ballY);
 
-                // Add the line to the canvas
-                MazeCanvas.Children.Add(edgeLine);
-            }
+            // Add the ball to the canvas
+            MazeCanvas.Children.Add(ballEllipse);
         }
+
     }
 
 
