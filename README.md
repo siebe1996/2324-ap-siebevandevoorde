@@ -196,3 +196,6 @@ Het ontwikkelen van het "Maze Generator" project was een leerzaam proces waarbij
 6. **Testen en Debuggen**: Het testen van verschillende scenario's en het debuggen van problemen was een integraal onderdeel van het ontwikkelingsproces. Ik heb geleerd hoe belangrijk het is om code grondig te testen voordat deze in productie gaat.
 						   Ook het Debuggen kan handig zijn voor het begrijpen van code voorbeelden. Zeker het recursief algoritme.
 
+#### Bronnen
+
+OpenAI. (2023). "ChatGPT". Available at: [ChatGPT](https://chat.openai.com/). Geraadpleegd op 05 oktober 2023.
