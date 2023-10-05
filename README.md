@@ -82,7 +82,7 @@ mijnDoolhof.MoveBall(1, 0); // Verplaats de bal één stap naar rechts
 
 // Verbind alle knooppunten in het doolhof om de lay-out voor te stellen
 mijnDoolhof.ConnectAllNodes();
-``
+```
 
 ### Algoritmen
 
