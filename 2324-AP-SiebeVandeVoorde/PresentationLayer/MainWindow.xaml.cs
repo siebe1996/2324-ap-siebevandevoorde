@@ -230,6 +230,29 @@ namespace PresentationLayer
 
             // Add the ball to the canvas
             MazeCanvas.Children.Add(ballEllipse);
+
+            foreach (var edge in maze.MazeGraph.Edges)
+            {
+                // Calculate the coordinates of the edge's start and end points
+                double startX = edge.Source.Column * cellSize + cellSize / 2;
+                double startY = edge.Source.Row * cellSize + cellSize / 2;
+                double endX = edge.Target.Column * cellSize + cellSize / 2;
+                double endY = edge.Target.Row * cellSize + cellSize / 2;
+
+                // Create a line to represent the edge
+                var edgeLine = new Line
+                {
+                    X1 = startX,
+                    Y1 = startY,
+                    X2 = endX,
+                    Y2 = endY,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 2
+                };
+
+                // Add the line to the canvas
+                MazeCanvas.Children.Add(edgeLine);
+            }
         }
 
     }
