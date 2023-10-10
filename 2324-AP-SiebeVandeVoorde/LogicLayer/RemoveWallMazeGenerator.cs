@@ -85,16 +85,6 @@ namespace LogicLayer
         {
             return row >= 0 && row < maze.Height && col >= 0 && col < maze.Width &&
                 maze.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col).Value == "1111";
-            /*if (row >= 0 && row < maze.Height && col >= 0 && col < maze.Width)
-            {
-                MazeNode node = maze.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col);
-                if (node.Value == "1111")
-                {
-                    return true;
-                }
-                else { return false; }
-            }
-            else { return false; }*/
         }
 
 

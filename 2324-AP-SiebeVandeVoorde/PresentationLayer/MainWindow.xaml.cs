@@ -37,30 +37,6 @@ namespace PresentationLayer
             }
         }
 
-        /*private void GenerateCharMazeButton_Click(object sender, RoutedEventArgs e)
-        {
-            string filePath = FilePathTextBox.Text;
-            try
-            {
-                char[,] maze = basicMazeGenerator.GenerateMaze(filePath);
-
-                MazeCanvas.Children.Clear();
-
-                if (maze != null)
-                {
-                    DrawMaze(maze);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid CSV file or other error occurred.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }*/
-
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string wallThinkness = WallThicknessTextBox1.Text;
@@ -143,56 +119,7 @@ namespace PresentationLayer
                 MessageBox.Show("Give number for wall thickness");
             }
         }
-        /*
-        private void DrawMaze(char[,] maze)
-        {
-            int rows = maze.GetLength(0);
-            int cols = maze.GetLength(1);
-
-
-            double cellSize = Math.Min(MazeCanvas.ActualWidth / cols, MazeCanvas.ActualHeight / rows);
-
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    char cell = maze[i, j];
-                    if (cell == '#')
-                    {
-                        Rectangle wallRect = new Rectangle
-                        {
-                            Width = cellSize,
-                            Height = cellSize,
-                            Fill = Brushes.Black
-                        };
-
-                        double x = j * cellSize;
-                        double y = i * cellSize;
-                        Canvas.SetLeft(wallRect, x);
-                        Canvas.SetTop(wallRect, y);
-
-                        MazeCanvas.Children.Add(wallRect);
-                    }
-                    else if (cell == ' ')
-                    {
-                        Rectangle openRect = new Rectangle
-                        {
-                            Width = cellSize,
-                            Height = cellSize,
-                            Fill = Brushes.Orange 
-                        };
-
-                        double x = j * cellSize;
-                        double y = i * cellSize;
-                        Canvas.SetLeft(openRect, x);
-                        Canvas.SetTop(openRect, y);
-
-                        MazeCanvas.Children.Add(openRect);
-                    }
-                }
-            }
-        }*/
+        
         public void DrawGraphMaze(Maze maze)
         {
             if (maze == null)
