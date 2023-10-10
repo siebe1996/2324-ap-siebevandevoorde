@@ -18,7 +18,7 @@ namespace LogicLayer
             this.dataAccess = dataAccess;
         }
 
-        public char[,] GenerateMaze(string filePath)
+        /*public char[,] GenerateMaze(string filePath)
         {
             string[] lines = dataAccess.ReadCSV(filePath); 
 
@@ -30,7 +30,7 @@ namespace LogicLayer
             char[,] maze = ConvertToMaze(lines);
 
             return maze;
-        }
+        }*/
 
         public Maze GenerateGraphMaze(string filePath, int wallThickness)
         {
@@ -46,7 +46,7 @@ namespace LogicLayer
             return maze;
         }
 
-        private char[,] ConvertToMaze(string[] lines)
+        /*private char[,] ConvertToMaze(string[] lines)
         {
             int rows = lines.Length;
             int cols = lines[0].Split(',').Length;
@@ -81,7 +81,7 @@ namespace LogicLayer
 
                 return maze;
             }
-            }
+            }*/
 
             private Maze ConvertToGraphMaze(string[] lines, int wallThickness)
         {
@@ -89,11 +89,35 @@ namespace LogicLayer
             int rows = lines.Length;
             int cols = lines[0].Split(',').Length;
 
-            if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
+            /*if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
             {
                 throw new InvalidOperationException("Position (1, 1) is not '0'");
+            }*/
+            Maze maze = new Maze(cols, rows, wallThickness);
+
+
+            MazeNode[,] nodes = new MazeNode[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                string[] values = lines[i].Split(',');
+
+                for (int j = 0; j < cols; j++)
+                {
+                    string currentValue = values[j];
+
+                    MazeNode node = new MazeNode(i, j, currentValue);
+                    nodes[i, j] = node;
+
+                    maze.MazeGraph.AddVertex(node);
+
+                }
             }
-            else
+
+            maze.ConnectAllNodes();
+
+            return maze;
+            /*else
             {
 
                 Maze maze = new Maze(cols, rows, wallThickness);
@@ -120,7 +144,7 @@ namespace LogicLayer
                 maze.ConnectAllNodes();
 
                 return maze;
-            }
+            }*/
         }
 
 

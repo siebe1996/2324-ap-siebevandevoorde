@@ -16,16 +16,9 @@ namespace LogicLayer
 
         public Maze GenerateMaze(int width, int height, int wallThickness)
         {
-            // Create an empty maze
             Maze maze = new Maze(width, height, wallThickness);
-
-            // Create nodes for each cell in the maze and initialize with walls
             CreateNodesWithWalls(maze);
-
-            // Generate the maze using recursive backtracking
-            GenerateMazeRecursive(maze, 1, 1);
-
-            // Connect all adjacent cells (nodes) in the maze
+            GenerateMazeRecursive(maze, 0, 0);
             maze.ConnectAllNodes();
 
             return maze;
@@ -37,31 +30,52 @@ namespace LogicLayer
             {
                 for (int col = 0; col < maze.Width; col++)
                 {
-                    maze.MazeGraph.AddVertex(new MazeNode(row, col, '1'));
+                    maze.MazeGraph.AddVertex(new MazeNode(row, col, "1111"));
                 }
             }
         }
 
         private void GenerateMazeRecursive(Maze maze, int currentRow, int currentCol)
         {
-            // Mark the current cell as open
-            maze.MazeGraph.Vertices.First(node => node.Row == currentRow && node.Column == currentCol).Value = '0';
+            MazeNode currentNode = maze.MazeGraph.Vertices.First(node => node.Row == currentRow && node.Column == currentCol);
 
-            // Get a random order for the directions (up, down, left, right)
             var directions = new List<(int, int)> { (-1, 0), (1, 0), (0, -1), (0, 1) };
             Shuffle(directions);
 
             foreach (var (dx, dy) in directions)
             {
-                int nextRow = currentRow + 2 * dy;
-                int nextCol = currentCol + 2 * dx;
+                int nextRow = currentRow + 1 * dy;
+                int nextCol = currentCol + 1 * dx;
 
                 if (IsValidCell(maze, nextRow, nextCol))
                 {
-                    // Mark the cell between the current and next cell as open
-                    maze.MazeGraph.Vertices.First(node => node.Row == currentRow + dy && node.Column == currentCol + dx).Value = '0';
+                    MazeNode nextNode = maze.MazeGraph.Vertices.First(node => node.Row == currentRow + dy && node.Column == currentCol + dx);
 
-                    // Recursively visit the next cell
+                    // node to the right
+                    if (dx == 1)
+                    {
+                        currentNode.Value = currentNode.Value.Remove(1, 1).Insert(1, "0");
+                        nextNode.Value = nextNode.Value.Remove(3, 1).Insert(3, "0");
+                    }
+                    // node to the left
+                    else if (dx == -1)
+                    {
+                        currentNode.Value = currentNode.Value.Remove(3, 1).Insert(3, "0");
+                        nextNode.Value = nextNode.Value.Remove(1, 1).Insert(1, "0");
+                    }
+                    // node below
+                    else if (dy == 1)
+                    {
+                        currentNode.Value = currentNode.Value.Remove(2, 1).Insert(2, "0");
+                        nextNode.Value = nextNode.Value.Remove(0, 1).Insert(0, "0");
+                    }
+                    // node above
+                    else if (dy == -1)
+                    {
+                        currentNode.Value = currentNode.Value.Remove(0, 1).Insert(0, "0");
+                        nextNode.Value = nextNode.Value.Remove(2, 1).Insert(2, "0");
+                    }
+
                     GenerateMazeRecursive(maze, nextRow, nextCol);
                 }
             }
@@ -69,8 +83,21 @@ namespace LogicLayer
 
         private bool IsValidCell(Maze maze, int row, int col)
         {
-            return row >= 1 && row < maze.Height - 1 && col >= 1 && col < maze.Width - 1 && maze.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col).Value == '1';
+            return row >= 0 && row < maze.Height && col >= 0 && col < maze.Width &&
+                maze.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col).Value == "1111";
+            /*if (row >= 0 && row < maze.Height && col >= 0 && col < maze.Width)
+            {
+                MazeNode node = maze.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col);
+                if (node.Value == "1111")
+                {
+                    return true;
+                }
+                else { return false; }
+            }
+            else { return false; }*/
         }
+
+
 
         private void Shuffle<T>(List<T> list)
         {
@@ -84,4 +111,5 @@ namespace LogicLayer
             }
         }
     }
+
 }

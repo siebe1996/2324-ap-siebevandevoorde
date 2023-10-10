@@ -37,7 +37,7 @@ namespace PresentationLayer
             }
         }
 
-        private void GenerateCharMazeButton_Click(object sender, RoutedEventArgs e)
+        /*private void GenerateCharMazeButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FilePathTextBox.Text;
             try
@@ -59,7 +59,7 @@ namespace PresentationLayer
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+        }*/
 
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -100,7 +100,7 @@ namespace PresentationLayer
 
             if (int.TryParse(wallThinkness, out int intValue))
             {
-                Maze maze = addWallMazeGenerator.GenerateMaze(7, 7, int.Parse(wallThinkness));
+                Maze maze = addWallMazeGenerator.GenerateMaze(5, 5, int.Parse(wallThinkness));
 
                 MazeCanvas.Children.Clear();
 
@@ -143,7 +143,7 @@ namespace PresentationLayer
                 MessageBox.Show("Give number for wall thickness");
             }
         }
-
+        /*
         private void DrawMaze(char[,] maze)
         {
             int rows = maze.GetLength(0);
@@ -192,9 +192,7 @@ namespace PresentationLayer
                     }
                 }
             }
-        }
-
-
+        }*/
         public void DrawGraphMaze(Maze maze)
         {
             if (maze == null)
@@ -202,64 +200,100 @@ namespace PresentationLayer
 
             MazeCanvas.Children.Clear();
 
-            double cellSize = Math.Min((MazeCanvas.ActualWidth * maze.WallThickness) / maze.MazeGraph.VertexCount, (MazeCanvas.ActualHeight * maze.WallThickness) / maze.MazeGraph.VertexCount);
+            double cellSize = Math.Min((MazeCanvas.ActualWidth) / maze.MazeGraph.VertexCount, (MazeCanvas.ActualHeight) / maze.MazeGraph.VertexCount);
+            cellSize = cellSize * 2;
 
             foreach (var vertex in maze.MazeGraph.Vertices)
             {
-                var nodeRectangle = new Rectangle
+                double topPosition = vertex.Row * cellSize;
+                double rightPosition = (vertex.Column + 1) * cellSize - maze.WallThickness;
+                double bottomPosition = (vertex.Row + 1) * cellSize - maze.WallThickness;
+                double leftPosition = vertex.Column * cellSize;
+
+                bool isConnectedAbove = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, -1, 0));
+                bool isConnectedRight = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, 1));
+                bool isConnectedBelow = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 1, 0));
+                bool isConnectedLeft = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, -1));
+
+                var cellRectangle = new Rectangle
                 {
                     Width = cellSize,
                     Height = cellSize,
-                    Fill = vertex.Value == '1' ? Brushes.Black : Brushes.Red,
-                    Stroke = Brushes.Blue,
-                    StrokeThickness = 2
+                    Fill = Brushes.Black,
                 };
+                Canvas.SetTop(cellRectangle, topPosition);
+                Canvas.SetLeft(cellRectangle, leftPosition);
+                MazeCanvas.Children.Add(cellRectangle);
 
-                Canvas.SetLeft(nodeRectangle, vertex.Column * cellSize);
-                Canvas.SetTop(nodeRectangle, vertex.Row * cellSize);
+                if (!isConnectedAbove)
+                {
+                    var aboveBorder = new Border
+                    {
+                        Width = cellSize,
+                        Height = maze.WallThickness,
+                        Background = Brushes.Red,
+                    };
+                    Canvas.SetTop(aboveBorder, topPosition);
+                    Canvas.SetLeft(aboveBorder, leftPosition);
+                    MazeCanvas.Children.Add(aboveBorder);
+                }
 
-                MazeCanvas.Children.Add(nodeRectangle);
+                if (!isConnectedRight)
+                {
+                    var rightBorder = new Border
+                    {
+                        Width = maze.WallThickness,
+                        Height = cellSize,
+                        Background = Brushes.Red,
+                    };
+                    Canvas.SetTop(rightBorder, topPosition);
+                    Canvas.SetLeft(rightBorder, rightPosition);
+                    MazeCanvas.Children.Add(rightBorder);
+                }
+
+                if (!isConnectedBelow)
+                {
+                    var belowBorder = new Border
+                    {
+                        Width = cellSize,
+                        Height = maze.WallThickness,
+                        Background = Brushes.Red,
+                    };
+                    Canvas.SetTop(belowBorder, bottomPosition);
+                    Canvas.SetLeft(belowBorder, leftPosition);
+                    MazeCanvas.Children.Add(belowBorder);
+                }
+
+                if (!isConnectedLeft)
+                {
+                    var leftBorder = new Border
+                    {
+                        Width = maze.WallThickness,
+                        Height = cellSize,
+                        Background = Brushes.Red,
+                    };
+                    Canvas.SetTop(leftBorder, topPosition);
+                    Canvas.SetLeft(leftBorder, leftPosition);
+                    MazeCanvas.Children.Add(leftBorder);
+                }
             }
-
-            var ballEllipse = new Ellipse
-            {
-                Width = cellSize / 2,
-                Height = cellSize / 2,
-                Fill = Brushes.Green,
-            };
-
-            double ballX = maze.BallPosition.X * cellSize + cellSize / 4;
-            double ballY = maze.BallPosition.Y * cellSize + cellSize / 4;
-            Canvas.SetLeft(ballEllipse, ballX);
-            Canvas.SetTop(ballEllipse, ballY);
-
-            MazeCanvas.Children.Add(ballEllipse);
-
             foreach (var edge in maze.MazeGraph.Edges)
             {
-                double startX = edge.Source.Column * cellSize + cellSize / 2;
-                double startY = edge.Source.Row * cellSize + cellSize / 2;
-                double endX = edge.Target.Column * cellSize + cellSize / 2;
-                double endY = edge.Target.Row * cellSize + cellSize / 2;
-
                 var edgeLine = new Line
                 {
-                    X1 = startX,
-                    Y1 = startY,
-                    X2 = endX,
-                    Y2 = endY,
-                    Stroke = Brushes.Black,
+                    X1 = edge.Source.Column * cellSize + cellSize / 2,
+                    Y1 = edge.Source.Row * cellSize + cellSize / 2,
+                    X2 = edge.Target.Column * cellSize + cellSize / 2,
+                    Y2 = edge.Target.Row * cellSize + cellSize / 2,
+                    Stroke = Brushes.Yellow,
                     StrokeThickness = 2
                 };
 
                 MazeCanvas.Children.Add(edgeLine);
             }
         }
-
     }
-
-
-
-
 }
+
+
 

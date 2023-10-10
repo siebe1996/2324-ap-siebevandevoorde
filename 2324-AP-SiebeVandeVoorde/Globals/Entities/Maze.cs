@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Globals.Entities
@@ -25,17 +26,15 @@ namespace Globals.Entities
             Width = width;
             Height = height;
             WallThickness = wallThickness;
-            BallPosition = new Coordinate(1, 1); // Initialize ball position to (1, 1)
+            BallPosition = new Coordinate(1, 1);
             MazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
         }
 
         public void MoveBall(int deltaX, int deltaY)
         {
-            // Update the ball's position within the maze
             int newX = BallPosition.X + deltaX;
             int newY = BallPosition.Y + deltaY;
 
-            // Ensure the new position is within the maze boundaries
             if (newX >= 0 && newX < Width && newY >= 0 && newY < Height)
             {
                 BallPosition = new Coordinate(newX, newY);
@@ -47,58 +46,101 @@ namespace Globals.Entities
             int width = this.Width;
             int height = this.Height;
 
-            // Connect all nodes to their adjacent neighbors (up, down, left, right)
             for (int row = 0; row < height; row++)
             {
                 for (int col = 0; col < width; col++)
                 {
                     MazeNode currentNode = this.MazeGraph.Vertices.First(node => node.Row == row && node.Column == col);
 
-                    // Check if the current node is an open cell ('0')
-                    if (currentNode.Value == '0')
+                    // Connect to the node above
+                    MazeNode nodeAbove = GetNeighbor(currentNode, -1, 0);
+                    if (nodeAbove != null && new Regex(@"^0").IsMatch(currentNode.Value))
                     {
-                        // Connect to the node above if it's an open cell ('0')
-                        if (row > 0)
-                        {
-                            MazeNode nodeAbove = this.MazeGraph.Vertices.FirstOrDefault(node => node.Row == row - 1 && node.Column == col && node.Value == '0');
-                            if (nodeAbove != null)
-                            {
-                                this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeAbove));
-                            }
-                        }
+                        this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeAbove));
+                    }
 
-                        // Connect to the node below if it's an open cell ('0')
-                        if (row < height - 1)
-                        {
-                            MazeNode nodeBelow = this.MazeGraph.Vertices.FirstOrDefault(node => node.Row == row + 1 && node.Column == col && node.Value == '0');
-                            if (nodeBelow != null)
-                            {
-                                this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeBelow));
-                            }
-                        }
+                    // Connect to the node to the right
+                    MazeNode nodeRight = GetNeighbor(currentNode, 0, 1);
+                    if (nodeRight != null && new Regex(@"^.0").IsMatch(currentNode.Value))
+                    {
+                        this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeRight));
+                    }
 
-                        // Connect to the node to the left if it's an open cell ('0')
-                        if (col > 0)
-                        {
-                            MazeNode nodeLeft = this.MazeGraph.Vertices.FirstOrDefault(node => node.Row == row && node.Column == col - 1 && node.Value == '0');
-                            if (nodeLeft != null)
-                            {
-                                this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeLeft));
-                            }
-                        }
+                    // Connect to the node below
+                    MazeNode nodeBelow = GetNeighbor(currentNode, 1, 0);
+                    if (nodeBelow != null && new Regex(@"^.{2}0").IsMatch(currentNode.Value))
+                    {
+                        this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeBelow));
+                    }
 
-                        // Connect to the node to the right if it's an open cell ('0')
-                        if (col < width - 1)
-                        {
-                            MazeNode nodeRight = this.MazeGraph.Vertices.FirstOrDefault(node => node.Row == row && node.Column == col + 1 && node.Value == '0');
-                            if (nodeRight != null)
-                            {
-                                this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeRight));
-                            }
-                        }
+                    // Connect to the node to the left
+                    MazeNode nodeLeft = GetNeighbor(currentNode, 0, -1);
+                    if (nodeLeft != null && new Regex(@"^.{3}0").IsMatch(currentNode.Value))
+                    {
+                        this.MazeGraph.AddEdge(new Edge<MazeNode>(currentNode, nodeLeft));
                     }
                 }
             }
+        }
+
+
+        public void ChangeOtherNode(MazeNode currentNode)
+        {
+            int width = this.Width;
+            int height = this.Height;
+
+            // Change the node above
+            MazeNode nodeAbove = GetNeighbor(currentNode, -1, 0);
+            if (nodeAbove != null && new Regex(@"^1").IsMatch(currentNode.Value))
+            {
+                char[] charArray = nodeAbove.Value.ToCharArray();
+                charArray[0] = '1';
+                string newValue = new string(charArray);
+                nodeAbove.Value = newValue;
+            }
+
+            // Change the right
+            MazeNode nodeRight = GetNeighbor(currentNode, 0, 1);
+            if (nodeRight != null && new Regex(@"^.0").IsMatch(currentNode.Value))
+            {
+                char[] charArray = nodeRight.Value.ToCharArray();
+                charArray[1] = '1';
+                string newValue = new string(charArray);
+                nodeRight.Value = newValue;
+            }
+
+            // Change the node below
+            MazeNode nodeBelow = GetNeighbor(currentNode, 1, 0);
+            if (nodeBelow != null && new Regex(@"^.{2}0").IsMatch(currentNode.Value))
+            {
+                char[] charArray = nodeBelow.Value.ToCharArray();
+                charArray[2] = '1';
+                string newValue = new string(charArray);
+                nodeBelow.Value = newValue;
+            }
+
+            // Change the node left
+            MazeNode nodeLeft = GetNeighbor(currentNode, 0, -1);
+            if (nodeLeft != null && new Regex(@"^.{3}0").IsMatch(currentNode.Value))
+            {
+                char[] charArray = nodeLeft.Value.ToCharArray();
+                charArray[3] = '1';
+                string newValue = new string(charArray);
+                nodeLeft.Value = newValue;
+            }
+        }
+
+
+        public MazeNode GetNeighbor(MazeNode node, int rowOffset, int colOffset)
+        {
+            int newRow = node.Row + rowOffset;
+            int newCol = node.Column + colOffset;
+            if (newRow < 0 || newRow >= this.Height || newCol < 0 || newCol >= this.Width)
+            {
+                return null;
+            }
+
+            return this.MazeGraph.Vertices.FirstOrDefault(v => v.Row == newRow && v.Column == newCol);
         }
     }
 }

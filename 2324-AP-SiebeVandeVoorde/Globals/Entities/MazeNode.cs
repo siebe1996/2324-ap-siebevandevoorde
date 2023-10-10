@@ -10,9 +10,9 @@ namespace Globals.Entities
     {
         public int Row { get; }
         public int Column { get; }
-        public char Value { get; set; }
+        public string Value { get; set; }
 
-        public MazeNode(int row, int column, char value)
+        public MazeNode(int row, int column, string value)
         {
             Row = row;
             Column = column;
