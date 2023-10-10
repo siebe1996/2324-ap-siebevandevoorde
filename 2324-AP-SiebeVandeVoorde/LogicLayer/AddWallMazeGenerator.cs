@@ -49,8 +49,8 @@ namespace LogicLayer
 
             for (int i = 0; i < totalCells; i++)
             {
-                int randomRow = random.Next(1, height - 1);
-                int randomCol = random.Next(1, width - 1);
+                int randomRow = random.Next(0, height);
+                int randomCol = random.Next(0, width);
 
                 string binaryValue = Convert.ToString(random.Next(16), 2).PadLeft(4, '0');
                 
