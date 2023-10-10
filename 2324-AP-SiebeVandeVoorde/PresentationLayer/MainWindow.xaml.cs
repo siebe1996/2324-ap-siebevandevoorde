@@ -44,7 +44,6 @@ namespace PresentationLayer
             {
                 char[,] maze = basicMazeGenerator.GenerateMaze(filePath);
 
-                // Clear previous maze (if any)
                 MazeCanvas.Children.Clear();
 
                 if (maze != null)
@@ -64,74 +63,93 @@ namespace PresentationLayer
 
         private void GenerateGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FilePathTextBox.Text;
-            try
+            string wallThinkness = WallThicknessTextBox1.Text;
+
+            if (int.TryParse(wallThinkness, out int intValue))
             {
-                Maze maze = basicMazeGenerator.GenerateGraphMaze(filePath);
-
-                // Clear previous maze (if any)
-                MazeCanvas.Children.Clear();
-
-                if (maze != null)
+                string filePath = FilePathTextBox.Text;
+                try
                 {
-                    // Display the maze on the canvas
-                    DrawGraphMaze(maze);
+                    Maze maze = basicMazeGenerator.GenerateGraphMaze(filePath, int.Parse(wallThinkness));
+
+                    MazeCanvas.Children.Clear();
+
+                    if (maze != null)
+                    {
+                        DrawGraphMaze(maze);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid CSV file or other error occurred.");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Invalid CSV file or other error occurred.");
+                    MessageBox.Show(ex.Message);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Give number for wall thickness");
             }
         }
 
         private void GenerateAddWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            Maze maze = addWallMazeGenerator.GenerateMaze(7,7,6);
+            string wallThinkness = WallThicknessTextBox2.Text;
 
-            // Clear previous maze (if any)
-            MazeCanvas.Children.Clear();
-
-            if (maze != null)
+            if (int.TryParse(wallThinkness, out int intValue))
             {
-                // Display the maze on the canvas
-                DrawGraphMaze(maze);
+                Maze maze = addWallMazeGenerator.GenerateMaze(7, 7, int.Parse(wallThinkness));
+
+                MazeCanvas.Children.Clear();
+
+                if (maze != null)
+                {
+                    DrawGraphMaze(maze);
+                }
+                else
+                {
+                    MessageBox.Show("Something went wrong");
+                }
             }
             else
             {
-                MessageBox.Show("Something went wrong");
+                MessageBox.Show("Give number for wall thickness");
             }
         }
 
         private void GenerateRemoveWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            Maze maze = removeWallMazeGenerator.GenerateMaze(15, 15, 8);
+            string wallThinkness = WallThicknessTextBox3.Text;
 
-            // Clear previous maze (if any)
-            MazeCanvas.Children.Clear();
-
-            if (maze != null)
+            if (int.TryParse(wallThinkness, out int intValue))
             {
-                // Display the maze on the canvas
-                DrawGraphMaze(maze);
+                Maze maze = removeWallMazeGenerator.GenerateMaze(7, 7, int.Parse(wallThinkness));
+
+                MazeCanvas.Children.Clear();
+
+                if (maze != null)
+                {
+                    DrawGraphMaze(maze);
+                }
+                else
+                {
+                    MessageBox.Show("Something went wrong");
+                }
             }
             else
             {
-                MessageBox.Show("Something went wrong");
+                MessageBox.Show("Give number for wall thickness");
             }
         }
 
         private void DrawMaze(char[,] maze)
         {
-            // Determine the dimensions of the maze
             int rows = maze.GetLength(0);
             int cols = maze.GetLength(1);
 
 
-            // Calculate the cell size based on the smaller dimension to ensure it fits entirely
             double cellSize = Math.Min(MazeCanvas.ActualWidth / cols, MazeCanvas.ActualHeight / rows);
 
 
@@ -142,40 +160,34 @@ namespace PresentationLayer
                     char cell = maze[i, j];
                     if (cell == '#')
                     {
-                        // Create a rectangle for walls
                         Rectangle wallRect = new Rectangle
                         {
                             Width = cellSize,
                             Height = cellSize,
-                            Fill = Brushes.Black // Color for walls
+                            Fill = Brushes.Black
                         };
 
-                        // Position the rectangle at the correct cell location
                         double x = j * cellSize;
                         double y = i * cellSize;
                         Canvas.SetLeft(wallRect, x);
                         Canvas.SetTop(wallRect, y);
 
-                        // Add the rectangle to the canvas
                         MazeCanvas.Children.Add(wallRect);
                     }
                     else if (cell == ' ')
                     {
-                        // Create a rectangle for open spaces (the road)
                         Rectangle openRect = new Rectangle
                         {
                             Width = cellSize,
                             Height = cellSize,
-                            Fill = Brushes.Orange // Color for open spaces (orange)
+                            Fill = Brushes.Orange 
                         };
 
-                        // Position the rectangle at the correct cell location
                         double x = j * cellSize;
                         double y = i * cellSize;
                         Canvas.SetLeft(openRect, x);
                         Canvas.SetTop(openRect, y);
 
-                        // Add the rectangle to the canvas
                         MazeCanvas.Children.Add(openRect);
                     }
                 }
@@ -188,58 +200,48 @@ namespace PresentationLayer
             if (maze == null)
                 throw new ArgumentNullException(nameof(maze));
 
-            // Clear the canvas before drawing the maze
             MazeCanvas.Children.Clear();
 
-            // Determine the cell size based on the smaller dimension to ensure it fits entirely
             double cellSize = Math.Min((MazeCanvas.ActualWidth * maze.WallThickness) / maze.MazeGraph.VertexCount, (MazeCanvas.ActualHeight * maze.WallThickness) / maze.MazeGraph.VertexCount);
 
             foreach (var vertex in maze.MazeGraph.Vertices)
             {
-                // Create a rectangle to represent the maze node
                 var nodeRectangle = new Rectangle
                 {
                     Width = cellSize,
                     Height = cellSize,
-                    Fill = vertex.Value == '1' ? Brushes.Red : Brushes.Orange,
+                    Fill = vertex.Value == '1' ? Brushes.Black : Brushes.Red,
                     Stroke = Brushes.Blue,
                     StrokeThickness = 2
                 };
 
-                // Set the position of the rectangle on the canvas
                 Canvas.SetLeft(nodeRectangle, vertex.Column * cellSize);
                 Canvas.SetTop(nodeRectangle, vertex.Row * cellSize);
 
-                // Add the rectangle to the canvas
                 MazeCanvas.Children.Add(nodeRectangle);
             }
 
-            // Draw the ball
             var ballEllipse = new Ellipse
             {
-                Width = cellSize / 2, // Adjust the size as needed
+                Width = cellSize / 2,
                 Height = cellSize / 2,
-                Fill = Brushes.Green, // Choose a color for the ball
+                Fill = Brushes.Green,
             };
 
-            // Set the position of the ball on the canvas based on its maze coordinates
-            double ballX = maze.BallPosition.X * cellSize + cellSize / 4; // Adjust the position for centering
-            double ballY = maze.BallPosition.Y * cellSize + cellSize / 4; // Adjust the position for centering
+            double ballX = maze.BallPosition.X * cellSize + cellSize / 4;
+            double ballY = maze.BallPosition.Y * cellSize + cellSize / 4;
             Canvas.SetLeft(ballEllipse, ballX);
             Canvas.SetTop(ballEllipse, ballY);
 
-            // Add the ball to the canvas
             MazeCanvas.Children.Add(ballEllipse);
 
             foreach (var edge in maze.MazeGraph.Edges)
             {
-                // Calculate the coordinates of the edge's start and end points
                 double startX = edge.Source.Column * cellSize + cellSize / 2;
                 double startY = edge.Source.Row * cellSize + cellSize / 2;
                 double endX = edge.Target.Column * cellSize + cellSize / 2;
                 double endY = edge.Target.Row * cellSize + cellSize / 2;
 
-                // Create a line to represent the edge
                 var edgeLine = new Line
                 {
                     X1 = startX,
@@ -250,7 +252,6 @@ namespace PresentationLayer
                     StrokeThickness = 2
                 };
 
-                // Add the line to the canvas
                 MazeCanvas.Children.Add(edgeLine);
             }
         }

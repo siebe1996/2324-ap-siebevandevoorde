@@ -24,26 +24,24 @@ namespace LogicLayer
 
             if (lines == null || lines.Length == 0)
             {
-                return null; // Handle invalid CSV file or other errors
+                return null;
             }
 
-            // Convert CSV data to maze representation
             char[,] maze = ConvertToMaze(lines);
 
             return maze;
         }
 
-        public Maze GenerateGraphMaze(string filePath)
+        public Maze GenerateGraphMaze(string filePath, int wallThickness)
         {
             string[] lines = dataAccess.ReadCSV(filePath);
 
             if (lines == null || lines.Length == 0)
             {
-                return null; // Handle invalid CSV file or other errors
+                return null;
             }
 
-            // Convert CSV data to a maze represented as an undirected graph
-            Maze maze = ConvertToGraphMaze(lines);
+            Maze maze = ConvertToGraphMaze(lines, wallThickness);
 
             return maze;
         }
@@ -51,7 +49,7 @@ namespace LogicLayer
         private char[,] ConvertToMaze(string[] lines)
         {
             int rows = lines.Length;
-            int cols = lines[0].Split(',').Length; // Split the first line using commas to get the number of columns
+            int cols = lines[0].Split(',').Length;
             char[,] maze = new char[rows, cols];
 
             if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
@@ -62,23 +60,21 @@ namespace LogicLayer
             {
                 for (int i = 0; i < rows; i++)
                 {
-                    // Split the line into individual values using commas as delimiters
                     string[] values = lines[i].Split(',');
 
                     for (int j = 0; j < cols; j++)
                     {
-                        // Convert the value to a character and handle invalid values
                         if (values.Length <= j || !char.TryParse(values[j], out char currentChar))
                         {
-                            maze[i, j] = ' '; // Treat as an empty space for invalid or missing values
+                            maze[i, j] = ' ';
                         }
                         else if (currentChar == '1')
                         {
-                            maze[i, j] = '#'; // '1' represents a wall
+                            maze[i, j] = '#';
                         }
                         else
                         {
-                            maze[i, j] = ' '; // Any other character represents an empty space
+                            maze[i, j] = ' ';
                         }
                     }
                 }
@@ -87,12 +83,11 @@ namespace LogicLayer
             }
             }
 
-            private Maze ConvertToGraphMaze(string[] lines)
+            private Maze ConvertToGraphMaze(string[] lines, int wallThickness)
         {
-            //var mazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
 
             int rows = lines.Length;
-            int cols = lines[0].Split(',').Length; // Split the first line using commas to get the number of columns
+            int cols = lines[0].Split(',').Length;
 
             if (!(lines.Length > 1 && lines[1].Split(',')[1][0] == '0'))
             {
@@ -101,10 +96,9 @@ namespace LogicLayer
             else
             {
 
-                Maze maze = new Maze(cols, rows, 4); // Create a new Maze object with the specified dimensions and wall thickness
+                Maze maze = new Maze(cols, rows, wallThickness);
 
 
-                // Create nodes for each cell in the maze
                 MazeNode[,] nodes = new MazeNode[rows, cols];
 
                 for (int i = 0; i < rows; i++)
@@ -115,11 +109,9 @@ namespace LogicLayer
                     {
                         char currentChar = values[j][0];
 
-                        // Create a node for each cell
                         MazeNode node = new MazeNode(i, j, currentChar);
                         nodes[i, j] = node;
 
-                        // Add the node to the graph
                         maze.MazeGraph.AddVertex(node);
 
                     }

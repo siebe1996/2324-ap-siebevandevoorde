@@ -11,7 +11,7 @@ namespace Globals.Interfaces
     public interface IBasicMazeGenerator
     {
         char[,] GenerateMaze(string filePath);
-        Maze GenerateGraphMaze(string filePath);
+        Maze GenerateGraphMaze(string filePath, int wallThickness);
     }
 }
 
