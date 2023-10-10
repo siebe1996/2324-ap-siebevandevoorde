@@ -101,7 +101,7 @@ namespace PresentationLayer
 
             if (int.TryParse(wallThinkness, out int intValue))
             {
-                Maze maze = removeWallMazeGenerator.GenerateMaze(7, 7, int.Parse(wallThinkness));
+                Maze maze = removeWallMazeGenerator.GenerateMaze(5, 5, int.Parse(wallThinkness));
 
                 MazeCanvas.Children.Clear();
 
@@ -202,6 +202,18 @@ namespace PresentationLayer
                     Canvas.SetTop(leftBorder, topPosition);
                     Canvas.SetLeft(leftBorder, leftPosition);
                     MazeCanvas.Children.Add(leftBorder);
+                }
+                if (vertex.Row == maze.BallPosition.X && vertex.Column == maze.BallPosition.Y)
+                {
+                    var ballEllipse = new Ellipse
+                    {
+                        Width = cellSize / 2,
+                        Height = cellSize / 2,
+                        Fill = Brushes.Blue,
+                    };
+                    Canvas.SetTop(ballEllipse, topPosition + cellSize / 4);
+                    Canvas.SetLeft(ballEllipse, leftPosition + cellSize / 4);
+                    MazeCanvas.Children.Add(ballEllipse);
                 }
             }
             foreach (var edge in maze.MazeGraph.Edges)
