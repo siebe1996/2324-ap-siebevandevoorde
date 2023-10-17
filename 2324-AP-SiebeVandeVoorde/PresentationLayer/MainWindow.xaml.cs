@@ -72,7 +72,7 @@ namespace PresentationLayer
 
         private void GenerateAddWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            string wallThinkness = WallThicknessTextBox2.Text;
+            string wallThinkness = WallThicknessTextBox1.Text;
 
             if (int.TryParse(wallThinkness, out int intValue))
             {
@@ -97,7 +97,7 @@ namespace PresentationLayer
 
         private void GenerateRemoveWallGraphMazeButton_Click(object sender, RoutedEventArgs e)
         {
-            string wallThinkness = WallThicknessTextBox3.Text;
+            string wallThinkness = WallThicknessTextBox1.Text;
 
             if (int.TryParse(wallThinkness, out int intValue))
             {

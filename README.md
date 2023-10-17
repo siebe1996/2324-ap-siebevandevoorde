@@ -67,7 +67,16 @@ De `Maze`-klasse maakt deel uit van de `Globals.Entities`-namespace en vertegenw
 
 ##### `ConnectAllNodes()`
 - Legt verbindingen tussen doolhofknooppunten in de `MazeGraph` om de lay-out van het doolhof voor te stellen.
-- Het doorloopt elke cel in het doolhof, verbindt knooppunten met hun aangrenzende buren en houdt rekening met open cellen ('0').
+- Het doorloopt elke cel in het doolhof, verbindt knooppunten met hun aangrenzende buren en houdt rekening met open muren (@"^.{*}0").
+
+##### `ChangeOtherNode(MazeNode currentNode)`
+- Verandert de value van doolhofknooppunten in `MazeGraph` zodat de buur waarde klopt.
+- Het doorloopt elke buur van een cel, verandert de aangrenzende buren en houdt rekening met open muren (@"^.{*}0").
+
+
+##### `GetNeighbor(MazeNode node, int rowOffset, int colOffset)`
+- Geeft de buur weer van een huidige node op de gevraagde plaats.
+- Kijkt of de gevraagde buur een geldige node is, zoja wordt deze weergegeven.
 
 #### Gebruik
 
@@ -86,7 +95,50 @@ mijnDoolhof.ConnectAllNodes();
 
 ### Algoritmen
 
+#### `BasicMazeGenerator.cs`
+
+#### Constructor
+
+##### `public BasicMazeGenerator(IMazeDataAccess dataAccess)`
+- verbindt de dataLayer.
+
+#### Methoden
+
+##### `public Maze GenerateGraphMaze(string filePath, int wallThickness)`
+
+Deze public methode leest de file in en returned een maze.
+
+**Parameters:**
+- `filepath` (string): de locatie van de file.
+- `wallThickness` (int): de dikte van de muren.
+
+**Functionaliteit:**
+- Kijkt of de file niet leeg is en returend een maze.
+
+##### `private Maze ConvertToGraphMaze(string[] lines, int wallThickness)`
+
+Deze private methode zet de array van strings met 4-bit binaire getallen om naar een maze en returned deze.
+
+**Parameters:**
+- `linesh` (string[]): array van stringss 4-bit binaire getallen.
+- `wallThickness` (int): de dikte van de muren.
+
+**Functionaliteit:**
+- creert eerst een lege maze.
+- neemt een 1 lijn en maakt hier een array van met verschillende 4-bit getallen
+- voegt mazenodes toe met de values uit de array.
+
 #### `AddWallMazeGenerator.cs`
+
+##### `private void CreateNodes(Maze maze)`
+
+Deze private methode zet alle cellen van het doolhof op ('0000').
+
+**Parameters:**
+- `maze` (Maze): Het doolhofobject om te genereren.
+
+**Functionaliteit:**
+- Overloopt de hoogte en breedte van het doolhof en plaatst een lege node in elke cel.
 
 ##### `private void AddRandomWalls(Maze maze)`
 
@@ -96,14 +148,13 @@ Deze private methode is verantwoordelijk voor het toevoegen van willekeurige mur
 - `maze` (Maze): Het doolhof waaraan willekeurige muren moeten worden toegevoegd.
 
 **Functionaliteit:**
-- Eerst bepaalt het de breedte en hoogte van het doolhof.
-- Vervolgens voegt het muren toe langs de boven- en onderkant van het doolhof, waardoor ze effectief worden afgesloten.
-- Daarna voegt het muren toe langs de linker- en rechterranden, met uitzondering van de hoeken.
-- Ten slotte voegt het willekeurig muren toe binnen het interieur van het doolhof. Het aantal toe te voegen muren wordt berekend als een fractie (30%) van het totale aantal beschikbare posities in het interieur, exclusief de rand.
+- Creert alle cellen zonder muren.
+- Overloopt de totale hoeveelheid cellen.
+- Neemt een random cel en verandert de value.
+- Verandert de value van de buren zodat deze kloppen met de nieuwe value van de huidige node..
 
 **Opmerking:**
-- Muren worden binnen de `MazeGraph` van het doolhof gerepresenteerd door het teken '1'.
-- De plaatsing van muren langs de randen zorgt ervoor dat het doolhof begrensd blijft.
+- Muren worden binnen de `MazeGraph` van het doolhof gerepresenteerd door het teken (@"^.{*}1").
 
 Deze methode draagt bij aan de generatie van een willekeurige doolhofstructuur, waarbij obstakels en complexiteit worden geïntroduceerd voor het navigeren in het doolhof.
 
@@ -119,10 +170,11 @@ Deze private methode genereert een doolhof recursief met behulp van een diepte-e
 - `currentCol` (int): De huidige kolompositie binnen het doolhof.
 
 **Functionaliteit:**
-- Het markeert de huidige cel als open, gerepresenteerd door het teken '0' binnen de `MazeGraph` van het `maze`-object.
 - De methode genereert een willekeurige volgorde voor de richtingen (omhoog, omlaag, links, rechts) en schudt deze.
 - Voor elke richting berekent het de positie van de volgende cel en controleert of het een geldige cel is binnen het doolhof.
-- Als de cel geldig is, markeert het de cel tussen de huidige en volgende cel als open, bezoekt het de volgende cel recursief en gaat het door met de generatie van het doolhof.
+- Het markeert de huidige muur als open, gerepresenteerd door het teken (@"^.{*}0") binnen de `MazeGraph` van het `maze`-object.
+- Het markeert de buur muur als open, gerepresenteerd door het teken (@"^.{*}0") binnen de `MazeGraph` van het `maze`-object.
+- Erna bezoekt het de volgende cel recursief en gaat het door met de generatie van het doolhof.
 
 ##### `private bool IsValidCell(Maze maze, int row, int col)`
 

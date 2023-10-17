@@ -8,6 +8,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -24,37 +25,41 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="WallThicknessTextBox1" Width="20" Margin="0,0,10,0"/>
-                <Button Content="Make Graph maze" Width="130" Click="GenerateGraphMazeButton_Click" Grid.Column="1"/>
+                <TextBlock Text="Wallthickness:" />
+                <TextBox x:Name="WallThicknessTextBox1" Width="20" Margin="5,0,10,0" Grid.Column="1"/>
             </Grid>
         </StackPanel>
 
-        
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="WallThicknessTextBox2" Width="20" Margin="0,0,10,0"/>
-                <Button Content="Make Add wall maze" Width="130" Click="GenerateAddWallGraphMazeButton_Click" Grid.Column="1"/>
+                <Button Content="Make Graph maze" Width="130" Click="GenerateGraphMazeButton_Click"/>
             </Grid>
         </StackPanel>
 
-
+        
         <StackPanel Grid.Row="3" HorizontalAlignment="Center" Margin="0,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
-                <TextBox x:Name="WallThicknessTextBox3" Width="20" Margin="0,0,10,0"/>
-                <Button Content="Make Remove wall maze" Width="130" Click="GenerateRemoveWallGraphMazeButton_Click" Grid.Column="1"/>
+                <Button Content="Make Add wall maze" Width="130" Click="GenerateAddWallGraphMazeButton_Click"/>
             </Grid>
         </StackPanel>
 
-        <Canvas Grid.Row="4" Name="MazeCanvas" />
+
+        <StackPanel Grid.Row="4" HorizontalAlignment="Center" Margin="0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Make Remove wall maze" Width="130" Click="GenerateRemoveWallGraphMazeButton_Click"/>
+            </Grid>
+        </StackPanel>
+
+        <Canvas Grid.Row="5" Name="MazeCanvas" />
     </Grid>
 </Window>
