@@ -15,7 +15,7 @@
 ***Modulair, meerlagenmodel, 'Separation of concern'***
 
 - [/1][x] *meerdere mappen*
-- [/1][ ] *meerdere projecten*
+- [/1][x] *meerdere projecten*
 - [/1][x] *minstens 3 delen*
 - [/1][x] *MVVM Design pattern*
 - [/1][x] *Dependency injection, interfaces*
