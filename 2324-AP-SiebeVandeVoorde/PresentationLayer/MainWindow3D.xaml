@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
+        xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         mc:Ignorable="d"
         Title="MainWindow3D" Height="450" Width="800">
     <Grid>
-        
+        <HelixToolkit:HelixViewport3D Name="helixViewport">
+            <HelixToolkit:DefaultLights/>
+        </HelixToolkit:HelixViewport3D>
     </Grid>
 </Window>
+    

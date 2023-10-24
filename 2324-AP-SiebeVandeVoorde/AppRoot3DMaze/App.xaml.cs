@@ -6,6 +6,7 @@ using System.Windows;
 
 namespace AppRoot3DMaze
 {
+    // can use 3D tools, helixtoolkit
     /// <summary>
     /// Composition root for App
     /// </summary>
@@ -18,7 +19,7 @@ namespace AppRoot3DMaze
             IBasicMazeGenerator basicMazeGenerator = BasicMazeGeneratorFactory.CreateBasicMazeGenerator(data);
             IMazeGenerator addWallMazeGenerator = AddWallMazeGeneratorFactory.CreateAddWallMazeGenerator();
             IMazeGenerator removeWallMazeGenerator = RemoveWallMazeGeneratorFactory.CreateRemoveWallMazeGenerator();
-            new MainWindow3D().Show();
+            new MainWindow3D(removeWallMazeGenerator).Show();
         }
     }
 }
