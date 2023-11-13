@@ -29,22 +29,104 @@ namespace PresentationLayer
         public MainWindow3D(IMazeGenerator removeWallMazeGenerator)
         {
             InitializeComponent();
-            //CreateMaze();
             this.removeWallMazeGenerator = removeWallMazeGenerator;
-            var cube = new BoxVisual3D
-            {
-                Center = new System.Windows.Media.Media3D.Point3D(0, 0, 0),
-                Width = 1,
-                Length = 1,
-                Height = 1,
-                Fill = System.Windows.Media.Brushes.Blue
-            };
-
-
-            // Add the 3D content to the viewport
-            helixViewport.Children.Add(cube);
+            Maze maze = removeWallMazeGenerator.GenerateMaze(5, 5, 2);
+            DrawMaze(maze);
         }
 
-        
+        private void DrawMaze(Maze maze)
+        {
+            var modelGroup = new Model3DGroup();
+
+            double cellSize = 1.0;
+
+            foreach (var vertex in maze.MazeGraph.Vertices)
+            {
+
+                bool isConnectedAbove = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, -1, 0));
+                bool isConnectedRight = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, 1));
+                bool isConnectedBelow = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 1, 0));
+                bool isConnectedLeft = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, -1));
+
+                double xPositionCenter = (vertex.Row * cellSize) + (cellSize / 2);
+                double zPositionCenter = (vertex.Column * cellSize) + (cellSize / 2);
+
+                var cellCube = new BoxVisual3D
+                {
+                    Width = cellSize/5,
+                    Height = cellSize,
+                    Length = cellSize,
+                    Center = new Point3D(xPositionCenter, 0, zPositionCenter),
+                    Material = Materials.Red,
+                };
+
+                var cellModel = cellCube.Model;
+                modelGroup.Children.Add(cellCube.Content);
+
+                if (!isConnectedAbove)
+                {
+                    var wallCube = new BoxVisual3D
+                    {
+                        Width = cellSize,
+                        Height = cellSize,
+                        Length = cellSize / 20,
+                        Material = Materials.Blue,
+                        Center = new Point3D(vertex.Row * cellSize, cellSize / 2, zPositionCenter),
+                    };
+
+                    modelGroup.Children.Add(wallCube.Content);
+                }
+
+                if (!isConnectedRight)
+                {
+                    var wallCube = new BoxVisual3D
+                    {
+                        Width = cellSize,
+                        Height = cellSize / 20,
+                        Length = cellSize,
+                        Material = Materials.Green,
+                        Center = new Point3D(xPositionCenter, cellSize / 2, vertex.Column * cellSize + cellSize),
+                    };
+
+                    modelGroup.Children.Add(wallCube.Content);
+                }
+
+                if (!isConnectedBelow)
+                {
+                    var wallCube = new BoxVisual3D
+                    {
+                        Width = cellSize,
+                        Height = cellSize,
+                        Length = cellSize / 20,
+                        Material = Materials.Orange,
+                        Center = new Point3D(vertex.Row * cellSize + cellSize, cellSize / 2, zPositionCenter),
+                    };
+
+                    modelGroup.Children.Add(wallCube.Content);
+                }
+
+                if (!isConnectedLeft)
+                {
+                    var wallCube = new BoxVisual3D
+                    {
+                        Width = cellSize,
+                        Height = cellSize/ 20,
+                        Length = cellSize,
+                        Material = Materials.Violet,
+                        Center = new Point3D(xPositionCenter, cellSize / 2, vertex.Column * cellSize),
+                    };
+
+                    modelGroup.Children.Add(wallCube.Content);
+                }
+
+            }
+
+            var mazeVisualizer = new ModelVisual3D
+            {
+                Content = modelGroup,
+            };
+
+            helixViewport.Children.Add(mazeVisualizer);
+        }
     }
 }
