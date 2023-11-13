@@ -20,9 +20,6 @@ using HelixToolkit.Wpf;
 
 namespace PresentationLayer
 {
-    /// <summary>
-    /// Interaction logic for MainWindow3D.xaml
-    /// </summary>
     public partial class MainWindow3D : Window
     {
         private readonly IMazeGenerator removeWallMazeGenerator;
@@ -51,7 +48,7 @@ namespace PresentationLayer
                 double xPositionCenter = (vertex.Row * cellSize) + (cellSize / 2);
                 double zPositionCenter = (vertex.Column * cellSize) + (cellSize / 2);
 
-                var cellCube = new BoxVisual3D
+                /*var cellCube = new BoxVisual3D
                 {
                     Width = cellSize/5,
                     Height = cellSize,
@@ -60,7 +57,17 @@ namespace PresentationLayer
                     Material = Materials.Red,
                 };
 
-                var cellModel = cellCube.Model;
+                modelGroup.Children.Add(cellCube.Content);*/
+
+                var cellCube = new BoxVisual3D
+                {
+                    Width = cellSize / 5,
+                    Height = cellSize,
+                    Length = cellSize,
+                    Center = new Point3D(xPositionCenter, 0, zPositionCenter),
+                    Material = Materials.Red,
+                };
+
                 modelGroup.Children.Add(cellCube.Content);
 
                 if (!isConnectedAbove)
@@ -117,6 +124,19 @@ namespace PresentationLayer
                     };
 
                     modelGroup.Children.Add(wallCube.Content);
+                }
+
+                if (vertex.Row == maze.BallPosition.X && vertex.Column == maze.BallPosition.Y)
+                {
+                    // Draw the ball (sphere in this case)
+                    var ball = new SphereVisual3D
+                    {
+                        Radius = cellSize / 4, // Adjust the radius as needed
+                        Material = Materials.Yellow, // You can choose a different material
+                        Center = new Point3D(xPositionCenter, cellSize / 4, zPositionCenter),
+                    };
+
+                    modelGroup.Children.Add(ball.Content);
                 }
 
             }
