@@ -117,6 +117,21 @@ namespace PresentationLayer
             if (!CheckWallCollision(oldX + gravityX, oldY + gravityY))
             {
                 sphere.Center = new Point3D(oldX + gravityX, oldY + gravityY, newZ);
+
+                var lastVertex = maze.MazeGraph.Vertices.Last();
+                double lastX = lastVertex.Row * cellSize + (cellSize / 2);
+                double lastY = lastVertex.Column * cellSize + (cellSize / 2);
+
+                if (sphere.Center.X >= lastX - cellSize / 2 && sphere.Center.X <= lastX + cellSize / 2 &&
+                    sphere.Center.Y >= lastY - cellSize / 2 && sphere.Center.Y <= lastY + cellSize / 2)
+                {
+                    MessageBoxResult result = MessageBox.Show("Congratulations! You reached the goal!", "Goal Reached", MessageBoxButton.OK);
+
+                    if (result == MessageBoxResult.OK)
+                    {
+                        InitializeMaze();
+                    }
+                }
             }
         }
 
@@ -175,10 +190,10 @@ namespace PresentationLayer
                 double xPositionCenter = (vertex.Row * cellSize) + (cellSize / 2);
                 double yPositionCenter = (vertex.Column * cellSize) + (cellSize / 2);
 
-                var test = Materials.Red;
+                var goal = Materials.Red;
                 if (vertex.Row == 0 && vertex.Column == 1)
                 {
-                    test = Materials.Gold;
+                    goal = Materials.Gold;
                 }
              
                 var cellCube = new BoxVisual3D
@@ -187,7 +202,9 @@ namespace PresentationLayer
                     Height = cellSize / 5, //z-as blauw up
                     Length = cellSize, // x-as rood towards me
                     Center = new Point3D(xPositionCenter, yPositionCenter, 0),
-                    Material = test,
+                    Material = (vertex.Row == maze.MazeGraph.Vertices.Last().Row && vertex.Column == maze.MazeGraph.Vertices.Last().Column
+                    ? Materials.Gold
+                    : Materials.Red),
                 };
 
                 modelGroup.Children.Add(cellCube.Content);
