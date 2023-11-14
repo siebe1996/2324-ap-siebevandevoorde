@@ -61,10 +61,6 @@ De `Maze`-klasse maakt deel uit van de `Globals.Entities`-namespace en vertegenw
 
 #### Methoden
 
-##### `MoveBall(int deltaX, int deltaY)`
-- Verplaatst de bal binnen het doolhof door zijn positie aan te passen op basis van de gegeven `deltaX` (verandering in de X-coördinaat) en `deltaY` (verandering in de Y-coördinaat).
-- Zorgt ervoor dat de nieuwe positie binnen de grenzen van het doolhof blijft.
-
 ##### `ConnectAllNodes()`
 - Legt verbindingen tussen doolhofknooppunten in de `MazeGraph` om de lay-out van het doolhof voor te stellen.
 - Het doorloopt elke cel in het doolhof, verbindt knooppunten met hun aangrenzende buren en houdt rekening met open muren (@"^.{*}0").
@@ -251,3 +247,34 @@ Het ontwikkelen van het "Maze Generator" project was een leerzaam proces waarbij
 #### Bronnen
 
 OpenAI. (2023). "ChatGPT". Available at: [ChatGPT](https://chat.openai.com/). Geraadpleegd op 05 oktober 2023.
+
+## Maze Game
+
+Dit is een spel dat gebruik maakt van de RemoveWallGenerator om een doolhof te genereren dat dan in 3D wordt weergegeven.
+
+### Structuur
+
+De structuur is nog steeds als hierboven vermeld is. Als enigste uitzondering is er een extra MainWindow en AppRoot bijgekomen.
+
+### 3D Model
+
+Het 3D-model wordt gegenereerd met behulp van de Helix Toolkit-bibliotheek. Het doolhof bestaat uit kubusvormige cellen die met elkaar verbonden zijn door muren. 
+De bal, weergegeven als een sfeervormig object, beweegt door het doolhof en reageert op zwaartekrachteffecten.
+
+### Detectie en Botsingen
+
+De detectie van botsingen tussen de bal en de muren van het doolhof gebeurt door te controleren of de toekomstige positie van de bal overlapt met een muur. 
+Dit wordt bereikt door de huidige positie van de bal te vergelijken met de naburige cellen en muren. Dit gebeurt in de methode `private bool CheckWallCollision(double x, double y)`
+Deze doet dit door:
+1. Te bepalen wat de huidige column en row is.
+2. Het zoeken van de bijhoordende vertex
+3. Bepalen van de verbindingen.
+4. Bepalen van de Muurcoordinaten.
+5. Decteren van botsingen
+6. Als er geen botsingen zijn gedetcteerd mag de functie doorlopen en kan de bal van positie veranderen.
+
+### Bronnen
+
+OpenAI. (2023). "ChatGPT". Available at: [ChatGPT](https://chat.openai.com/). Geraadpleegd op 14 november 2023.
+StackOverflow. Available at: [StackOverflow](https://stackoverflow.com/). Geraadpleegd op 14 november 2023.
+HelixToolKit. Available at: [StackOverflow](https://stackoverflow.com/). Geraadpleegd op 14 november 2023.

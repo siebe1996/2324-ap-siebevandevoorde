@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PresentationLayer"
         xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow3D" Height="450" Width="800">
+        Title="Maze Game" Height="450" Width="800">
     <Grid>
         <HelixToolkit:HelixViewport3D Name="helixViewport">
             <HelixToolkit:DefaultLights/>
