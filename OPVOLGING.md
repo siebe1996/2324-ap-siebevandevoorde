@@ -1,4 +1,3 @@
-
 ## Feedback Applied Programming
 
 ### Opgave 1: Maze Generator
@@ -14,31 +13,31 @@
 
 ***Modulair, meerlagenmodel, 'Separation of concern'***
 
-- [/1][x] *meerdere mappen*
-- [/1][x] *meerdere projecten*
-- [/1][x] *minstens 3 delen*
-- [/1][x] *MVVM Design pattern*
-- [/1][x] *Dependency injection, interfaces*
-- [/1][x] *Logica onafhankelijk van grafische laag, scheiding der lagen*
-- [/2][ ] *Opbouw model (inhoudelijk), entiteiten voor doolhof, muren en bal*
-- [/2][x] *3 factories voor mazegenerators + 1 interface*
+- [/1][1] *meerdere mappen*
+- [/1][1] *meerdere projecten*
+- [/1][1] *minstens 3 delen*
+- [/1][0] *MVVM Design pattern*
+- [/1][1] *Dependency injection, interfaces*
+- [/1][1] *Logica onafhankelijk van grafische laag, scheiding der lagen*
+- [/2][1] *Opbouw model (inhoudelijk), entiteiten voor doolhof, muren en bal*
+- [/2][2] *3 factories voor mazegenerators + 1 interface*
 
 
 #### 3. User interface, functionaliteit, UX (15%) 
 
 ***Max 5, evt. verminderd volgens ...***
 
-- [5-#][x] *Layout UI: Per element zonder toelichting of duidelijke tekst: -1*
-- [5-2*#][x] *Goede UX: Per (soort) runtime error: -2*
+- [5-#][-2] *Layout UI: Per element zonder toelichting of duidelijke tekst: -1*
+- [5-2*#][] *Goede UX: Per (soort) runtime error: -2*
 
 
 #### 4. Goede werking - snelheid - bugs (35%)
 
-- [/5][x] *Statische generatie*
-- [/10][x] *Muren slopen factory*
-- [/10][x] *Muren toeboegen factory*
-- [/5][x] *Via GUI meerdere runs kunnen doen die telkens andere doolhoven genereren*
-- [/5][x] *Tekenen van het doolhof met WPF*
+- [/5][3] *Statische generatie*
+- [/10][10] *Muren slopen factory*
+- [/10][7] *Muren toevoegen factory*
+- [/5][5] *Via GUI meerdere runs kunnen doen die telkens andere doolhoven genereren*
+- [/5][5] *Tekenen van het doolhof met WPF*
 
 
 #### 5. Programmeerstijl, Kwaliteit van de code (10%)
