@@ -277,4 +277,4 @@ Deze doet dit door:
 
 OpenAI. (2023). "ChatGPT". Available at: [ChatGPT](https://chat.openai.com/). Geraadpleegd op 14 november 2023.
 StackOverflow. Available at: [StackOverflow](https://stackoverflow.com/). Geraadpleegd op 14 november 2023.
-HelixToolKit. Available at: [StackOverflow](https://stackoverflow.com/). Geraadpleegd op 14 november 2023.
+HelixToolKit. Available at: [helix toolkit](https://github.com/helix-toolkit). Geraadpleegd op 14 november 2023.
