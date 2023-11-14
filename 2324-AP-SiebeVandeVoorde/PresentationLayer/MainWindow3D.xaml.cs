@@ -18,6 +18,8 @@ using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using HelixToolkit.Wpf;
 using System.Windows.Threading;
+using System.Data.Common;
+using QuickGraph;
 
 namespace PresentationLayer
 {
@@ -74,16 +76,16 @@ namespace PresentationLayer
             switch (e.Key)
             {
                 case Key.Left:
-                    tiltAngleX -= tiltSpeedX;
+                    tiltAngleY -= tiltSpeedX;
                     break;
                 case Key.Right:
-                    tiltAngleX += tiltSpeedX;
+                    tiltAngleY += tiltSpeedX;
                     break;
                 case Key.Up:
-                    tiltAngleY -= tiltSpeedY;
+                    tiltAngleX -= tiltSpeedY;
                     break;
                 case Key.Down:
-                    tiltAngleY += tiltSpeedY;
+                    tiltAngleX += tiltSpeedY;
                     break;
             }
         }
@@ -105,30 +107,58 @@ namespace PresentationLayer
             double tiltRadiansX = tiltAngleX * Math.PI / 180.0;
             double tiltRadiansY = tiltAngleY * Math.PI / 180.0;
             double gravityX = Math.Sin(tiltRadiansX);
-            double gravityY = Math.Tan(tiltRadiansY); // Gravity in the Y direction
+            double gravityY = Math.Tan(tiltRadiansY);
 
-            double newX = (double)Math.Round(gravityX);
-            double newY = (double)Math.Round(gravityY);
             double newZ = 0 + ball.Straal;
-
-            /*((TranslateTransform3D)sphere.Transform).OffsetX = 10;
-            ((TranslateTransform3D)sphere.Transform).OffsetY = 10;
-            ((TranslateTransform3D)sphere.Transform).OffsetZ = 0;*/
 
             var oldX = sphere.Center.X;
             var oldY = sphere.Center.Y;
 
-            //sphere.Transform = new TranslateTransform3D(10, 10, 0); //transform doesnt work???
-            sphere.Center = new Point3D(oldX + gravityX, oldY + gravityY, newZ);
-            
-            SphereVisual3D sphereCjheck = sphere;
-
-            // Update the TranslateTransform3D offsets based on the new ball position
-            /*ballTransform.OffsetX = newX * cellSize;
-            ballTransform.OffsetY = newY * cellSize;
-            ballTransform.OffsetZ = newZ;*/
-            //UpdateViewport();
+            if (!CheckWallCollision(oldX + gravityX, oldY + gravityY))
+            {
+                sphere.Center = new Point3D(oldX + gravityX, oldY + gravityY, newZ);
+            }
         }
+
+        private bool CheckWallCollision(double x, double y)
+        {
+            int column = (int)Math.Floor(y);
+            int row = (int)Math.Floor(x);
+            var vertex = maze.MazeGraph.Vertices.FirstOrDefault(v => v.Column == column && v.Row == row);
+            bool isConnectedAbove = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, -1, 0));
+            bool isConnectedRight = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, 1));
+            bool isConnectedBelow = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 1, 0));
+            bool isConnectedLeft = maze.MazeGraph.ContainsEdge(vertex, maze.GetNeighbor(vertex, 0, -1));
+
+            double wallLeft = vertex.Column * cellSize;
+            double wallRight = (vertex.Column + 1) * cellSize;
+            double wallTop = vertex.Row * cellSize;
+            double wallBottom = (vertex.Row + 1) * cellSize;
+
+            if (!isConnectedAbove && x - ball.Straal < wallTop)
+            {
+                return true; // botsing met top muur
+            }
+
+            if (!isConnectedRight && y + ball.Straal > wallRight)
+            {
+                return true;
+            }
+
+            if (!isConnectedBelow && x + ball.Straal > wallBottom)
+            {
+                return true;
+            }
+
+            if (!isConnectedLeft && y - ball.Straal < wallLeft)
+            {
+                return true;
+            }
+
+            return false; // Geen botsing
+        }
+
+
 
         private void DrawMaze()
         {
@@ -145,13 +175,19 @@ namespace PresentationLayer
                 double xPositionCenter = (vertex.Row * cellSize) + (cellSize / 2);
                 double yPositionCenter = (vertex.Column * cellSize) + (cellSize / 2);
 
+                var test = Materials.Red;
+                if (vertex.Row == 0 && vertex.Column == 1)
+                {
+                    test = Materials.Gold;
+                }
+             
                 var cellCube = new BoxVisual3D
                 {
                     Width = cellSize, //y-as groen right
                     Height = cellSize / 5, //z-as blauw up
                     Length = cellSize, // x-as rood towards me
                     Center = new Point3D(xPositionCenter, yPositionCenter, 0),
-                    Material = Materials.Red,
+                    Material = test,
                 };
 
                 modelGroup.Children.Add(cellCube.Content);
