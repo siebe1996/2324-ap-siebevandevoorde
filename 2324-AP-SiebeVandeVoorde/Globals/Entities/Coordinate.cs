@@ -8,13 +8,16 @@ namespace Globals.Entities
 {
     public struct Coordinate
     {
-        public int X { get; }
-        public int Y { get; }
+        public double X { get; }
+        public double Y { get; }
+        public double? Z { get; }
 
-        public Coordinate(int x, int y)
+        public Coordinate(double x, double y, double? z = null)
         {
             X = x;
             Y = y;
+            Z = z;
         }
+        
     }
 }

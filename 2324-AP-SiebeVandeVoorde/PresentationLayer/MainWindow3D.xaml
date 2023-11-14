@@ -10,6 +10,7 @@
     <Grid>
         <HelixToolkit:HelixViewport3D Name="helixViewport">
             <HelixToolkit:DefaultLights/>
+            <HelixToolkit:CoordinateSystemVisual3D />
         </HelixToolkit:HelixViewport3D>
     </Grid>
 </Window>

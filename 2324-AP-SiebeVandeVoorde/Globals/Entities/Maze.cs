@@ -15,6 +15,7 @@ namespace Globals.Entities
         public int WallThickness { get; }
         public Coordinate BallPosition { get; set; }
         public UndirectedGraph<MazeNode, Edge<MazeNode>> MazeGraph { get; }
+        public Ball Ball { get; set; }
 
         public Maze(int width, int height, int wallThickness)
         {
@@ -28,16 +29,18 @@ namespace Globals.Entities
             WallThickness = wallThickness;
             BallPosition = new Coordinate(0, 0);
             MazeGraph = new UndirectedGraph<MazeNode, Edge<MazeNode>>();
+            Ball = new Ball(0);
         }
 
-        public void MoveBall(int deltaX, int deltaY)
+        public void MoveBall(double deltaX, double deltaY, double deltaZ)
         {
-            int newX = BallPosition.X + deltaX;
-            int newY = BallPosition.Y + deltaY;
+            double newX = BallPosition.X + deltaX;
+            double newY = BallPosition.Y + deltaY;
+            double? newZ = BallPosition.Z.HasValue? BallPosition.Z.Value + deltaZ :  null;
 
-            if (newX >= 0 && newX < Width && newY >= 0 && newY < Height)
+            if (newX >= 0 && newX < Width && newY >= 0 && newY < Height && newZ >= 0+Ball.Straal)
             {
-                BallPosition = new Coordinate(newX, newY);
+                BallPosition = new Coordinate(newX, newY, newZ);
             }
         }
 
